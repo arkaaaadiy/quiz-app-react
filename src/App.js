@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import Layout from './hoc/Layout/Layout';
+import Quiz from './containers/Quiz/Quiz';
 
 function App() {
 	return (
 		<Layout>
-			<div> 123 </div>{' '}
+			<Quiz />
 		</Layout>
 	);
 }
