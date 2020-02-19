@@ -13,5 +13,6 @@
 }
 .QuizWrapper {
     width: 100%;
+    max-width: 600px;
     padding: 0 40px;
 }

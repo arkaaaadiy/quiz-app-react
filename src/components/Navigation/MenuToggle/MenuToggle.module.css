@@ -18,7 +18,11 @@
 .MenuToggle.open {
 	left: 320px;
 }
-
+@media (max-width: 321px){
+.MenuToggle.open {
+	left: 270px;
+}	
+}
 .MenuToggle div {
 	height: 0px;
     border: 1.7px solid #fff;
