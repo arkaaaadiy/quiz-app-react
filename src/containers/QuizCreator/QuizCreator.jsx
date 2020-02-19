@@ -9,6 +9,7 @@ import {
 } from '../../form/formFrameword';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import Select from '../../components/UI/Select/Select';
+import axios from 'axios';
 
 function createOptionControl(number) {
 	return createControl(
@@ -47,32 +48,53 @@ export default class QuizCreator extends Component {
 		event.preventDefault();
 	};
 
-	createQuizHandler = (event) => {
-		event.preventDefault()
-		console.log(this.state);
+	createQuizHandler = async event => {
+		event.preventDefault();
+
+		try {
+			await axios.post(
+				'https://quiz-app-f88ee.firebaseio.com/quizes.json',
+				this.state.quiz
+			)
+			this.setState({
+				quiz: [],
+				rightAnswerId: 1,
+				isFormValid: false,
+				formControls: createFormControl()
+			})
+		} catch (e) {
+			console.log(e);
+		}
+		
 	};
 
-	addQuestionHandler = (event) => {
-		event.preventDefault()
+	addQuestionHandler = event => {
+		event.preventDefault();
 
-		const quiz = this.state.quiz.concat()
-		const index = quiz.length + 1
+		const quiz = this.state.quiz.concat();
+		const index = quiz.length + 1;
 
-		const {question, option1, option2, option3, option4} = this.state.formControls
+		const {
+			question,
+			option1,
+			option2,
+			option3,
+			option4
+		} = this.state.formControls;
 
 		const questionItem = {
 			question: question.value,
 			id: index,
 			rightAnswerId: this.state.rightAnswerId,
 			answers: [
-				{text: option1.value, id: option1.id},
-				{text: option2.value, id: option2.id},
-				{text: option3.value, id: option3.id},
-				{text: option4.value, id: option4.id},
+				{ text: option1.value, id: option1.id },
+				{ text: option2.value, id: option2.id },
+				{ text: option3.value, id: option3.id },
+				{ text: option4.value, id: option4.id }
 			]
-		}
+		};
 
-		quiz.push(questionItem)
+		quiz.push(questionItem);
 
 		this.setState({
 			quiz,
@@ -146,14 +168,18 @@ export default class QuizCreator extends Component {
 						{this.renderInputs()}
 
 						{select}
-						<Button type='primary'
-						 disabled={!this.state.isFormValid}
-						 onClick={this.addQuestionHandler}>
+						<Button
+							type='primary'
+							disabled={!this.state.isFormValid}
+							onClick={this.addQuestionHandler}
+						>
 							Добавить вопрос
 						</Button>
-						<Button type='success'
-						disabled={this.state.quiz.length === 0}
-						onClick={this.createQuizHandler}>
+						<Button
+							type='success'
+							disabled={this.state.quiz.length === 0}
+							onClick={this.createQuizHandler}
+						>
 							Создать тест
 						</Button>
 					</form>
